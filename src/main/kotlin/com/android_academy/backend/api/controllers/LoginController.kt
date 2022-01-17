@@ -28,7 +28,7 @@ class LoginController(
                     token = loginResult.token
             )
         } else {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }
     }
 }
