@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication(scanBasePackages = ["com.android_academy.backend"])
 @EnableScheduling
-class WinnerApp
+class AndroidAcademyBackendAPI
 
 fun main(args: Array<String>) {
-	runApplication<WinnerApp>(*args)
+    runApplication<AndroidAcademyBackendAPI>(*args)
 }

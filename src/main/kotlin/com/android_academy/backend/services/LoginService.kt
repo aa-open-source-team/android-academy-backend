@@ -7,8 +7,8 @@ import com.android_academy.backend.services.models.LoginResult
 import org.springframework.beans.factory.annotation.Autowired
 
 class LoginService(
-        @Autowired val userDAO: UsersDao,
-        @Autowired val authInfoDao: AuthInfoDao
+    @Autowired val userDAO: UsersDao,
+    @Autowired val authInfoDao: AuthInfoDao
 ) {
     fun login(username: String, pwd: String): LoginResult {
         val user = userDAO.findBy(username = username)
@@ -17,26 +17,26 @@ class LoginService(
         if (success) {
             token = generateToken()
             authInfoDao.save(
-                    AuthInfo(token = token, userId = user!!.id)
+                AuthInfo(token = token, userId = user!!.id)
             )
         }
         return LoginResult(
-                success = success,
-                token = token,
-                user = user
+            success = success,
+            token = token,
+            user = user
         )
     }
 
     fun getAuthInfo(token: String): AuthInfo? =
-            authInfoDao.findBy(token = token)
+        authInfoDao.findBy(token = token)
 
     fun updateAuthInfo(token: String, fcmToken: String, userId: Long) {
         authInfoDao.save(
-                AuthInfo(
-                        token = token,
-                        fcmToken = fcmToken,
-                        userId = userId
-                )
+            AuthInfo(
+                token = token,
+                fcmToken = fcmToken,
+                userId = userId
+            )
         )
     }
 }

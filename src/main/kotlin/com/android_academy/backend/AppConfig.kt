@@ -3,7 +3,7 @@ package com.android_academy.backend
 import com.android_academy.backend.db.dao.*
 import com.android_academy.backend.db.models.*
 import com.android_academy.backend.services.CoursesService
-import com.android_academy.backend.services.LecturesService
+import com.android_academy.backend.services.LessonsService
 import com.android_academy.backend.services.LoginService
 import com.android_academy.backend.services.RegisterService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -39,10 +39,10 @@ class AppConfig {
             )
 
     @Bean
-    fun lecturesDao(): LecturesDao =
-            LecturesDao(
-                    delegateDao = createDao(clazz = Lecture::class.java)
-            )
+    fun lessonsDao(): LessonsDao =
+        LessonsDao(
+            delegateDao = createDao(clazz = Lesson::class.java)
+        )
 
     @Bean
     fun userCoursesDao(): UsersCoursesDao =
@@ -87,16 +87,16 @@ class AppConfig {
 
 
     @Bean
-    fun lecturesService(
-            lecturesDao: LecturesDao,
-            usersCoursesDao: UsersCoursesDao,
-            authInfoDao: AuthInfoDao
-    ): LecturesService =
-            LecturesService(
-                    lecturesDao = lecturesDao,
-                    usersCoursesDao = usersCoursesDao,
-                    authInfoDao = authInfoDao
-            )
+    fun lessonsService(
+        lessonsDao: LessonsDao,
+        usersCoursesDao: UsersCoursesDao,
+        authInfoDao: AuthInfoDao
+    ): LessonsService =
+        LessonsService(
+            lessonsDao = lessonsDao,
+            usersCoursesDao = usersCoursesDao,
+            authInfoDao = authInfoDao
+        )
 
     // fixme: choose/configure a new messaging service as FireBase for this project was shut down
 //    @Bean

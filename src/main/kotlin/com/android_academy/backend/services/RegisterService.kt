@@ -9,8 +9,8 @@ import com.android_academy.backend.services.models.LoginResult
 import org.springframework.beans.factory.annotation.Autowired
 
 class RegisterService(
-        @Autowired val userDAO: UsersDao,
-        @Autowired val authInfoDao: AuthInfoDao
+    @Autowired val userDAO: UsersDao,
+    @Autowired val authInfoDao: AuthInfoDao
 ) {
     fun register(username: String, pwd: String, name: String, mentor: Boolean): LoginResult {
         val existingUser = userDAO.findBy(username = username)
@@ -20,9 +20,9 @@ class RegisterService(
             val token = generateToken()
             authInfoDao.save(authInfo = AuthInfo(token = token, userId = user.id))
             return LoginResult(
-                    success = true,
-                    token = token,
-                    user = user
+                success = true,
+                token = token,
+                user = user
             )
         } else {
             throw ExistingEntityException()

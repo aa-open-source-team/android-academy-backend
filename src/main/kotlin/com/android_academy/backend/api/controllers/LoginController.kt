@@ -15,17 +15,17 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/login")
 class LoginController(
-        @Autowired val loginService: LoginService
+    @Autowired val loginService: LoginService
 ) {
     @PostMapping
     fun login(
-            @RequestBody loginRequest: LoginRequestDTO
+        @RequestBody loginRequest: LoginRequestDTO
     ): LoginResponseDTO {
         val loginResult = loginService.login(username = loginRequest.username, pwd = loginRequest.pwd)
         if (loginResult.success) {
             return LoginResponseDTO(
-                    userProfile = loginResult.user!!.toUserProfileDTO(),
-                    token = loginResult.token
+                userProfile = loginResult.user!!.toUserProfileDTO(),
+                token = loginResult.token
             )
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)

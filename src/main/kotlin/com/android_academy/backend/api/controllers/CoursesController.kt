@@ -17,13 +17,13 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("/courses")
 class CoursesController(
-        @Autowired val coursesService: CoursesService,
-        @Autowired val loginService: LoginService
+    @Autowired val coursesService: CoursesService,
+    @Autowired val loginService: LoginService
 ) {
     @PostMapping("update")
     fun updateCourse(
-            @RequestHeader(TOKEN_HEADER, required = false) token: String?,
-            @RequestBody updateCourseRequestDTO: UpdateCourseRequestDTO
+        @RequestHeader(TOKEN_HEADER, required = false) token: String?,
+        @RequestBody updateCourseRequestDTO: UpdateCourseRequestDTO
     ): CourseDTO {
         if (token == null) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
@@ -39,12 +39,12 @@ class CoursesController(
 
     @GetMapping("all")
     fun getAllCourses(
-            @RequestHeader(TOKEN_HEADER, required = false) token: String?
+        @RequestHeader(TOKEN_HEADER, required = false) token: String?
     ): List<CourseDTO> {
         logger.error("The token is ${token ?: "null"}")
         if (token != null && loginService.getAuthInfo(token) != null) {
             return coursesService.getAllCourses()
-                    .map { course -> fromCourse(course = course) }
+                .map { course -> fromCourse(course = course) }
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }
@@ -53,7 +53,7 @@ class CoursesController(
 
     @GetMapping("favorite")
     fun getFavoriteCourses(
-            @RequestHeader(TOKEN_HEADER, required = false) token: String?
+        @RequestHeader(TOKEN_HEADER, required = false) token: String?
     ): List<CourseDTO> {
         if (token == null) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
@@ -61,7 +61,7 @@ class CoursesController(
         val authInfo = loginService.getAuthInfo(token)
         if (authInfo != null) {
             return coursesService.getFavoriteCourses(userId = authInfo.userId)
-                    .map { course -> fromCourse(course = course) }
+                .map { course -> fromCourse(course = course) }
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }

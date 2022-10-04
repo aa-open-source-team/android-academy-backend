@@ -9,12 +9,12 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/user")
 class UsersController(
-        @Autowired val loginService: LoginService
+    @Autowired val loginService: LoginService
 ) {
     @PostMapping("update-fcm-token")
     fun updateFcmToken(
-            @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
-            @RequestBody fcmToken: String
+        @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
+        @RequestBody fcmToken: String
     ) {
         if (token == null) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)

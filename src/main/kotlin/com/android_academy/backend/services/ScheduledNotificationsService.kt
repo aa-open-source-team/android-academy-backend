@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component
 @Component
 class ScheduledNotificationsService(
 //        @Autowired val messageService: MessageService,
-        @Autowired val lecturesService: LecturesService
+    @Autowired val lessonsService: LessonsService
 ) {
-//    @Scheduled(cron = "0 */15 * * * *") // hourly
+    //    @Scheduled(cron = "0 */15 * * * *") // hourly
     fun sendNotificationsIfNeeded() {
-        for ((lecture, tokens) in lecturesService.findFcmTokensToBeNotified()) {
-//            messageService.sendNotifications(lecture = lecture, fcmTokens = tokens)
+        for ((lesson, tokens) in lessonsService.findFcmTokensToBeNotified()) {
+//            messageService.sendNotifications(lesson = lesson, fcmTokens = tokens)
         }
     }
 }

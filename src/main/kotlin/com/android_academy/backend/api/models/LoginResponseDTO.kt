@@ -1,6 +1,6 @@
 package com.android_academy.backend.api.models
 
-data class LoginResponseDTO(
-        val userProfile: UserProfileDTO,
-        val token: String
+class LoginResponseDTO(
+    val userProfile: UserProfileDTO,
+    val token: String
 )

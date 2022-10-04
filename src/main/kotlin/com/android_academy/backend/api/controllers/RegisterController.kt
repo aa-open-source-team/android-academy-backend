@@ -16,25 +16,25 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/register")
 class RegisterController(
-        @Autowired val registerService: RegisterService
+    @Autowired val registerService: RegisterService
 ) {
 
     @PostMapping
     fun register(
-            @RequestBody registerRequestDTO: RegisterRequestDTO
+        @RequestBody registerRequestDTO: RegisterRequestDTO
     ): RegisterResponseDTO =
-            try {
-                val registerResult = registerService.register(
-                        username = registerRequestDTO.username,
-                        pwd = registerRequestDTO.pwd,
-                        name = registerRequestDTO.name,
-                        mentor = registerRequestDTO.mentor
-                )
-                RegisterResponseDTO(
-                        token = registerResult.token,
-                        registerResult.user!!.toUserProfileDTO()
-                )
-            } catch (e: ExistingEntityException) {
-                throw ResponseStatusException(HttpStatus.CONFLICT)
-            }
+        try {
+            val registerResult = registerService.register(
+                username = registerRequestDTO.username,
+                pwd = registerRequestDTO.pwd,
+                name = registerRequestDTO.name,
+                mentor = registerRequestDTO.mentor
+            )
+            RegisterResponseDTO(
+                token = registerResult.token,
+                registerResult.user!!.toUserProfileDTO()
+            )
+        } catch (e: ExistingEntityException) {
+            throw ResponseStatusException(HttpStatus.CONFLICT)
+        }
 }
