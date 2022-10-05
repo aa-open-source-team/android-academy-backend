@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable
-class User(
+class UserEntity(
     @DatabaseField(generatedId = true)
     val id: Long = 0,
     @DatabaseField
@@ -20,7 +20,7 @@ class User(
     constructor() : this(id = 0, username = "", pwd = "", name = "", mentor = false)
 }
 
-fun User.toUserProfileDTO(): UserProfileDTO =
+fun UserEntity.toUserProfileDTO(): UserProfileDTO =
     UserProfileDTO(
         username = username,
         name = name,

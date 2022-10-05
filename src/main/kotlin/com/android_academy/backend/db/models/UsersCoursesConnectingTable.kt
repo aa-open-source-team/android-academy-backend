@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable
-class UsersCourses(
+class UsersCoursesConnectingTable(
     @DatabaseField(generatedId = true)
     val id: Long? = null,
     @DatabaseField

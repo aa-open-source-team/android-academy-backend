@@ -4,8 +4,8 @@ import com.android_academy.backend.api.models.LessonDTO
 import com.android_academy.backend.api.models.UpdateLessonRequestDTO
 import com.android_academy.backend.api.models.fromLesson
 import com.android_academy.backend.api.models.toLesson
-import com.android_academy.backend.services.LessonsService
-import com.android_academy.backend.services.LoginService
+import com.android_academy.backend.domain.services.LessonsService
+import com.android_academy.backend.domain.services.LoginService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*

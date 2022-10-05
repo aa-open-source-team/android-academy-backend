@@ -1,4 +1,4 @@
-package com.android_academy.backend.api.models
+package com.android_academy.backend.domain.models
 
 enum class CourseMode {
     ONLINE,

@@ -2,10 +2,10 @@ package com.android_academy.backend
 
 import com.android_academy.backend.db.dao.*
 import com.android_academy.backend.db.models.*
-import com.android_academy.backend.services.CoursesService
-import com.android_academy.backend.services.LessonsService
-import com.android_academy.backend.services.LoginService
-import com.android_academy.backend.services.RegisterService
+import com.android_academy.backend.domain.services.CoursesService
+import com.android_academy.backend.domain.services.LessonsService
+import com.android_academy.backend.domain.services.LoginService
+import com.android_academy.backend.domain.services.RegisterService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.j256.ormlite.dao.Dao
@@ -24,30 +24,30 @@ class AppConfig {
     @Bean
     fun userDao(): UsersDao =
             UsersDao(
-                    delegateDAO = createDao(clazz = User::class.java)
+                delegateDAO = createDao(clazz = UserEntity::class.java)
             )
 
     @Bean
     fun authInfoDAO(): AuthInfoDao =
-            AuthInfoDao(delegateDAO = createDao(clazz = AuthInfo::class.java))
+        AuthInfoDao(delegateDAO = createDao(clazz = AuthInfoEntity::class.java))
 
     @Bean
     fun coursesDao(): CoursesDao =
             CoursesDao(
-                    coursesDelegateDAO = createDao(clazz = Course::class.java),
-                    userCoursesDelegateDao = createDao(clazz = UsersCourses::class.java)
+                coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
+                userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
             )
 
     @Bean
     fun lessonsDao(): LessonsDao =
         LessonsDao(
-            delegateDao = createDao(clazz = Lesson::class.java)
+            delegateDao = createDao(clazz = LessonEntity::class.java)
         )
 
     @Bean
     fun userCoursesDao(): UsersCoursesDao =
             UsersCoursesDao(
-                    userCoursesDelegateDao = createDao(clazz = UsersCourses::class.java)
+                userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
             )
 
     @Bean
@@ -68,8 +68,8 @@ class AppConfig {
     fun coursesService(): CoursesService =
             CoursesService(
                     coursesDao = CoursesDao(
-                            coursesDelegateDAO = createDao(clazz = Course::class.java),
-                            userCoursesDelegateDao = createDao(clazz = UsersCourses::class.java)
+                        coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
+                        userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
                     )
             )
 

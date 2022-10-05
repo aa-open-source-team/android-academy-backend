@@ -4,7 +4,7 @@ import com.android_academy.backend.api.models.RegisterRequestDTO
 import com.android_academy.backend.api.models.RegisterResponseDTO
 import com.android_academy.backend.db.exceptions.ExistingEntityException
 import com.android_academy.backend.db.models.toUserProfileDTO
-import com.android_academy.backend.services.RegisterService
+import com.android_academy.backend.domain.services.RegisterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping

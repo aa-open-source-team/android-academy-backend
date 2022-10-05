@@ -1,7 +1,10 @@
 package com.android_academy.backend.api.models
 
 import com.android_academy.backend.AppConfig
-import com.android_academy.backend.db.models.Course
+import com.android_academy.backend.db.models.CourseEntity
+import com.android_academy.backend.domain.models.City
+import com.android_academy.backend.domain.models.CourseLanguage
+import com.android_academy.backend.domain.models.CourseMode
 import com.fasterxml.jackson.module.kotlin.readValue
 
 class CourseDTO(
@@ -19,7 +22,7 @@ class CourseDTO(
     val isSubscribed: Boolean = false
 )
 
-fun fromCourse(course: Course): CourseDTO =
+fun fromCourse(course: CourseEntity): CourseDTO =
     with(course) {
         CourseDTO(
             id = id!!,

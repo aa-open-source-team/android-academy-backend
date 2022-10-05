@@ -1,6 +1,6 @@
-package com.android_academy.backend.services
+package com.android_academy.backend.domain.services
 
-import com.android_academy.backend.db.models.Lesson
+import com.android_academy.backend.db.models.LessonEntity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class MessageService(
     @Autowired val messenger: FirebaseMessaging
 ) {
-    fun sendNotifications(lesson: Lesson, fcmTokens: List<String?>) {
+    fun sendNotifications(lesson: LessonEntity, fcmTokens: List<String?>) {
         for (fcmToken in fcmTokens) {
             messenger.send(
                 Message.builder()

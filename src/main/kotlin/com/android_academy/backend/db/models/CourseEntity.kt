@@ -1,10 +1,12 @@
 package com.android_academy.backend.db.models
 
+import com.android_academy.backend.domain.models.CourseLanguage
+import com.android_academy.backend.domain.models.CourseMode
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "lessons")
-class Lesson(
+@DatabaseTable(tableName = "courses")
+class CourseEntity(
     @DatabaseField(generatedId = true)
     val id: Long? = null,
     @DatabaseField
@@ -14,33 +16,29 @@ class Lesson(
     @DatabaseField
     val fullDescription: String? = null,
     @DatabaseField
-    val youtubeUrl: String = "",
-    @DatabaseField
-    val githubRepoUrl: String = "",
-    @DatabaseField
-    val telegramChannel: String = "",
-    @DatabaseField
-    val additionalMaterials: String,
-    @DatabaseField
     val imgUrl: String? = null,
     @DatabaseField
-    val tags: String,
+    val tags: String? = null,
     @DatabaseField
-    val courseId: Long,
+    val isSubscribed: Boolean,
+    @DatabaseField
+    val language: CourseLanguage,
     @DatabaseField
     val startTimestampSec: Long,
     @DatabaseField
     val endTimestampSec: Long,
     @DatabaseField
-    val isFavourite: Boolean
+    val hostCities: String,
+    @DatabaseField
+    val mode: CourseMode,
 ) {
     constructor() : this(
         title = "",
-        additionalMaterials = "",
-        tags = "",
-        courseId = 0,
+        isSubscribed = false,
+        language = CourseLanguage.ENGLISH,
         startTimestampSec = 0,
         endTimestampSec = 0,
-        isFavourite = false
+        hostCities = "",
+        mode = CourseMode.OFFLINE
     )
 }

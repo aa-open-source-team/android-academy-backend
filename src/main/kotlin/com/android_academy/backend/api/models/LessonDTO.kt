@@ -1,7 +1,7 @@
 package com.android_academy.backend.api.models
 
 import com.android_academy.backend.AppConfig
-import com.android_academy.backend.db.models.Lesson
+import com.android_academy.backend.db.models.LessonEntity
 import com.fasterxml.jackson.module.kotlin.readValue
 
 class LessonDTO(
@@ -21,7 +21,7 @@ class LessonDTO(
     val isFavourite: Boolean
 )
 
-fun fromLesson(lesson: Lesson): LessonDTO =
+fun fromLesson(lesson: LessonEntity): LessonDTO =
     with(lesson) {
         LessonDTO(
             id = id!!,

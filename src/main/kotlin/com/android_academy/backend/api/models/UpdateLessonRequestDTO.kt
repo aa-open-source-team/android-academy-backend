@@ -1,7 +1,7 @@
 package com.android_academy.backend.api.models
 
 import com.android_academy.backend.AppConfig
-import com.android_academy.backend.db.models.Lesson
+import com.android_academy.backend.db.models.LessonEntity
 
 class UpdateLessonRequestDTO(
     val id: Long? = null,
@@ -18,8 +18,8 @@ class UpdateLessonRequestDTO(
     val isFavourite: Boolean
 )
 
-fun UpdateLessonRequestDTO.toLesson(): Lesson =
-    Lesson(
+fun UpdateLessonRequestDTO.toLesson(): LessonEntity =
+    LessonEntity(
         id = id,
         title = title,
         youtubeUrl = youtubeUrl,

@@ -3,7 +3,7 @@ package com.android_academy.backend.api.controllers
 import com.android_academy.backend.api.models.LoginRequestDTO
 import com.android_academy.backend.api.models.LoginResponseDTO
 import com.android_academy.backend.db.models.toUserProfileDTO
-import com.android_academy.backend.services.LoginService
+import com.android_academy.backend.domain.services.LoginService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping

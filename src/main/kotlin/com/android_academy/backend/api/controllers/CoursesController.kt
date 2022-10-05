@@ -4,8 +4,8 @@ import com.android_academy.backend.api.models.CourseDTO
 import com.android_academy.backend.api.models.UpdateCourseRequestDTO
 import com.android_academy.backend.api.models.fromCourse
 import com.android_academy.backend.api.models.toCourse
-import com.android_academy.backend.services.CoursesService
-import com.android_academy.backend.services.LoginService
+import com.android_academy.backend.domain.services.CoursesService
+import com.android_academy.backend.domain.services.LoginService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

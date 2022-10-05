@@ -1,4 +1,4 @@
-package com.android_academy.backend.services
+package com.android_academy.backend.domain.services
 
 import java.math.BigInteger
 import java.security.SecureRandom

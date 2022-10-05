@@ -1,14 +1,14 @@
 package com.android_academy.backend.db.dao
 
-import com.android_academy.backend.db.models.Course
-import com.android_academy.backend.db.models.UsersCourses
+import com.android_academy.backend.db.models.CourseEntity
+import com.android_academy.backend.db.models.UsersCoursesConnectingTable
 import com.j256.ormlite.dao.Dao
 
 class CoursesDao(
-    private val coursesDelegateDAO: Dao<Course, Long>,
-    private val userCoursesDelegateDao: Dao<UsersCourses, Long>
+    private val coursesDelegateDAO: Dao<CourseEntity, Long>,
+    private val userCoursesDelegateDao: Dao<UsersCoursesConnectingTable, Long>
 ) {
-    fun save(userId: Long, course: Course): Course {
+    fun save(userId: Long, course: CourseEntity): CourseEntity {
         if (course.id != null) {
             coursesDelegateDAO.update(course)
         } else {
@@ -16,7 +16,7 @@ class CoursesDao(
         }
         if (course.isSubscribed) {
             userCoursesDelegateDao.create(
-                UsersCourses(
+                UsersCoursesConnectingTable(
                     userId = userId, courseId = course.id!!
                 )
             )
@@ -24,13 +24,13 @@ class CoursesDao(
         return findById(course.id!!)
     }
 
-    private fun findById(id: Long): Course =
+    private fun findById(id: Long): CourseEntity =
         coursesDelegateDAO.queryForId(id)
 
-    fun getAll(): List<Course> =
+    fun getAll(): List<CourseEntity> =
         coursesDelegateDAO.queryForAll()
 
-    fun getFavorite(userId: Long): List<Course> {
+    fun getFavorite(userId: Long): List<CourseEntity> {
         val courseIds = userCoursesDelegateDao.queryForEq("userId", userId)
             .map { usersCourses -> usersCourses.courseId }
         return coursesDelegateDAO.queryBuilder()
