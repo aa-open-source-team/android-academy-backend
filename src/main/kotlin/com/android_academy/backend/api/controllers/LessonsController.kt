@@ -35,8 +35,7 @@ class LessonsController(
 
     @GetMapping("all")
     fun getAll(
-        @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
-        @RequestParam courseId: Long
+        @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?
     ): List<LessonDTO> {
         if (token != null && loginService.getAuthInfo(token) != null) {
             return lessonsService.getAll()
