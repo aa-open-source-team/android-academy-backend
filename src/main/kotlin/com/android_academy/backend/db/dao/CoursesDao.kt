@@ -1,43 +1,43 @@
 package com.android_academy.backend.db.dao
 
-import com.android_academy.backend.db.models.Course
-import com.android_academy.backend.db.models.UsersCourses
+import com.android_academy.backend.db.models.CourseEntity
+import com.android_academy.backend.db.models.UsersCoursesConnectingTable
 import com.j256.ormlite.dao.Dao
 
 class CoursesDao(
-        private val coursesDelegateDAO: Dao<Course, Long>,
-        private val userCoursesDelegateDao: Dao<UsersCourses, Long>
+    private val coursesDelegateDAO: Dao<CourseEntity, Long>,
+    private val userCoursesDelegateDao: Dao<UsersCoursesConnectingTable, Long>
 ) {
-    fun save(userId: Long, course: Course): Course {
+    fun save(userId: Long, course: CourseEntity): CourseEntity {
         if (course.id != null) {
             coursesDelegateDAO.update(course)
         } else {
             coursesDelegateDAO.create(course)
         }
-        if (course.subscribed) {
+        if (course.isSubscribed) {
             userCoursesDelegateDao.create(
-                    UsersCourses(
-                            userId = userId, courseId = course.id!!
-                    )
+                UsersCoursesConnectingTable(
+                    userId = userId, courseId = course.id!!
+                )
             )
         }
         return findById(course.id!!)
     }
 
-    private fun findById(id: Long): Course =
-            coursesDelegateDAO.queryForId(id)
+    private fun findById(id: Long): CourseEntity =
+        coursesDelegateDAO.queryForId(id)
 
-    fun getAll(): List<Course> =
-            coursesDelegateDAO.queryForAll()
+    fun getAll(): List<CourseEntity> =
+        coursesDelegateDAO.queryForAll()
 
-    fun getFavorite(userId: Long): List<Course> {
+    fun getFavorite(userId: Long): List<CourseEntity> {
         val courseIds = userCoursesDelegateDao.queryForEq("userId", userId)
-                .map { usersCourses -> usersCourses.courseId }
+            .map { usersCourses -> usersCourses.courseId }
         return coursesDelegateDAO.queryBuilder()
-                .where()
-                .`in`("id", courseIds)
-                .and()
-                .eq("subscribed", true)
-                .query()
+            .where()
+            .`in`("id", courseIds)
+            .and()
+            .eq("subscribed", true)
+            .query()
     }
 }

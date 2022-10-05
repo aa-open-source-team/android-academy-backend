@@ -30,6 +30,12 @@ dependencies {
 	implementation("io.github.microutils:kotlin-logging:2.0.6")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 	implementation("com.google.firebase:firebase-admin:7.1.0")
+
+	val openapiVersion = "1.6.0"
+	implementation("org.springdoc:springdoc-openapi-data-rest:$openapiVersion")
+	implementation("org.springdoc:springdoc-openapi-ui:$openapiVersion")
+	implementation("org.springdoc:springdoc-openapi-kotlin:$openapiVersion")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
