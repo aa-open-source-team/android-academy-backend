@@ -28,7 +28,7 @@ class RegisterController(
                 username = registerRequestDTO.username,
                 pwd = registerRequestDTO.pwd,
                 name = registerRequestDTO.name,
-                mentor = registerRequestDTO.mentor
+                userRole = registerRequestDTO.userRole
             )
             RegisterResponseDTO(
                 token = registerResult.token,
