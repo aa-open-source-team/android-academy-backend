@@ -23,9 +23,9 @@ class AppConfig {
 
     @Bean
     fun userDao(): UsersDao =
-            UsersDao(
-                delegateDAO = createDao(clazz = UserEntity::class.java)
-            )
+        UsersDao(
+            delegateDAO = createDao(clazz = UserEntity::class.java)
+        )
 
     @Bean
     fun authInfoDAO(): AuthInfoDao =
@@ -33,10 +33,10 @@ class AppConfig {
 
     @Bean
     fun coursesDao(): CoursesDao =
-            CoursesDao(
-                coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
-                userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
-            )
+        CoursesDao(
+            coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
+            userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
+        )
 
     @Bean
     fun lessonsDao(): LessonsDao =
@@ -46,32 +46,32 @@ class AppConfig {
 
     @Bean
     fun userCoursesDao(): UsersCoursesDao =
-            UsersCoursesDao(
-                userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
-            )
+        UsersCoursesDao(
+            userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
+        )
 
     @Bean
     fun loginService(
-            userDAO: UsersDao,
-            authInfoDao: AuthInfoDao
+        userDAO: UsersDao,
+        authInfoDao: AuthInfoDao
     ): LoginService =
-            LoginService(userDAO = userDAO, authInfoDao = authInfoDao)
+        LoginService(userDAO = userDAO, authInfoDao = authInfoDao)
 
     @Bean
     fun registerService(
-            userDAO: UsersDao,
-            authInfoDao: AuthInfoDao
+        userDAO: UsersDao,
+        authInfoDao: AuthInfoDao
     ): RegisterService =
-            RegisterService(userDAO = userDAO, authInfoDao = authInfoDao)
+        RegisterService(userDAO = userDAO, authInfoDao = authInfoDao)
 
     @Bean
     fun coursesService(): CoursesService =
-            CoursesService(
-                    coursesDao = CoursesDao(
-                        coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
-                        userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
-                    )
+        CoursesService(
+            coursesDao = CoursesDao(
+                coursesDelegateDAO = createDao(clazz = CourseEntity::class.java),
+                userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
             )
+        )
 
 //    @Bean
 //    fun messaging(): FirebaseMessaging {
@@ -109,8 +109,8 @@ class AppConfig {
     private fun <T, I> createDao(clazz: Class<T>): Dao<T, I> {
         val connectionSource = JdbcConnectionSource(url)
         val orm: Dao<T, I> = DaoManager.createDao(
-                connectionSource,
-                clazz
+            connectionSource,
+            clazz
         )
         TableUtils.createTableIfNotExists(connectionSource, clazz)
         return orm
