@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.kotlin.readValue
 
 class CourseDTO(
+    @JsonProperty("id")
     val id: Long,
+    @JsonProperty("title")
     val title: String,
     @JsonProperty("short_description")
     val shortDescription: String? = null,
@@ -17,7 +19,9 @@ class CourseDTO(
     val fullDescription: String? = null,
     @JsonProperty("img_url")
     val imgUrl: String? = null,
+    @JsonProperty("tags")
     val tags: List<String>,
+    @JsonProperty("language")
     val language: CourseLanguage,
     @JsonProperty("start_timestamp_sec")
     val startTimestampSec: Long,
@@ -25,6 +29,7 @@ class CourseDTO(
     val endTimestampSec: Long,
     @JsonProperty("host_cities")
     val hostCities: List<City> = emptyList(),
+    @JsonProperty("mode")
     val mode: CourseMode,
     @JsonProperty("subscribed")
     val isSubscribed: Boolean = false
