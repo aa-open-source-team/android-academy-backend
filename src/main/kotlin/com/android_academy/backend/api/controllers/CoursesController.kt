@@ -4,9 +4,6 @@ import com.android_academy.backend.api.models.CourseDTO
 import com.android_academy.backend.api.models.UpdateCourseRequestDTO
 import com.android_academy.backend.api.models.fromCourse
 import com.android_academy.backend.api.models.toCourse
-import com.android_academy.backend.domain.models.City
-import com.android_academy.backend.domain.models.CourseLanguage
-import com.android_academy.backend.domain.models.CourseMode
 import com.android_academy.backend.domain.services.CoursesService
 import com.android_academy.backend.domain.services.LoginService
 import mu.KotlinLogging
@@ -45,18 +42,12 @@ class CoursesController(
         @RequestHeader(TOKEN_HEADER, required = false) token: String?
     ): List<CourseDTO> {
         logger.error("The token is ${token ?: "null"}")
-        return listOf(
-            CourseDTO(
-                id = 1,
-                title = "Welcome",
-                tags = listOf("good-lord"),
-                language = CourseLanguage.ENGLISH,
-                startTimestampSec = 1666935308,
-                endTimestampSec = 1667935308,
-                hostCities = listOf(City.TEL_AVIV),
-                mode = CourseMode.ONLINE
-            )
-        )
+        if (token != null && loginService.getAuthInfo(token) != null) {
+            return coursesService.getAllCourses()
+                .map { course -> fromCourse(course = course) }
+        } else {
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        }
     }
 
 
