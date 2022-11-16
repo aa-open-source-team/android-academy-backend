@@ -1,7 +1,6 @@
 package com.android_academy.backend.api.controllers
 
 import com.android_academy.backend.api.models.CourseDTO
-import com.android_academy.backend.api.models.UpdateCourseRequestDTO
 import com.android_academy.backend.api.models.fromCourse
 import com.android_academy.backend.api.models.toCourse
 import com.android_academy.backend.domain.services.CoursesService
@@ -23,14 +22,14 @@ class CoursesController(
     @PostMapping("update")
     fun updateCourse(
         @RequestHeader(TOKEN_HEADER, required = false) token: String?,
-        @RequestBody updateCourseRequestDTO: UpdateCourseRequestDTO
+        @RequestBody newCourseDTO: CourseDTO
     ): CourseDTO {
         if (token == null) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }
         val authInfo = loginService.getAuthInfo(token)
         if (authInfo != null) {
-            return fromCourse(coursesService.save(userId = authInfo.userId, course = updateCourseRequestDTO.toCourse()))
+            return fromCourse(coursesService.save(userId = authInfo.userId, course = newCourseDTO.toCourse()))
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }

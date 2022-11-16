@@ -1,7 +1,6 @@
 package com.android_academy.backend.api.controllers
 
 import com.android_academy.backend.api.models.LessonDTO
-import com.android_academy.backend.api.models.UpdateLessonRequestDTO
 import com.android_academy.backend.api.models.fromLesson
 import com.android_academy.backend.api.models.toLesson
 import com.android_academy.backend.domain.services.LessonsService
@@ -20,14 +19,14 @@ class LessonsController(
     @PostMapping("update")
     fun updateLesson(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
-        @RequestBody updateLessonRequestDTO: UpdateLessonRequestDTO
+        @RequestBody newLessonDTO: LessonDTO
     ): LessonDTO {
         if (token == null) {
             throw throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }
         val authInfo = loginService.getAuthInfo(token)
         if (authInfo != null) {
-            return fromLesson(lessonsService.save(lesson = updateLessonRequestDTO.toLesson()))
+            return fromLesson(lessonsService.save(lesson = newLessonDTO.toLesson()))
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }
@@ -58,10 +57,10 @@ class LessonsController(
         }
     }
 
-    @GetMapping("lesson-id")
+    @GetMapping("{lesson-id}")
     fun getLessonById(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
-        @RequestParam lessonId: Long
+        @PathVariable lessonId: Long
     ): LessonDTO {
         if (token != null && loginService.getAuthInfo(token) != null) {
             val lesson = lessonsService.getById(id = lessonId)

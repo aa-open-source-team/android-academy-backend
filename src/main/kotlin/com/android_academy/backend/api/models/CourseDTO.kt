@@ -10,7 +10,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 
 class CourseDTO(
     @JsonProperty("id")
-    val id: Long,
+    val id: Long? = null,
     @JsonProperty("title")
     val title: String,
     @JsonProperty("short_description")
@@ -52,3 +52,19 @@ fun fromCourse(course: CourseEntity): CourseDTO =
             mode = mode,
         )
     }
+
+fun CourseDTO.toCourse(): CourseEntity =
+    CourseEntity(
+        id = id,
+        title = title,
+        shortDescription = shortDescription,
+        fullDescription = fullDescription,
+        imgUrl = imgUrl,
+        tags = tags.joinToString(),
+        isSubscribed = isSubscribed,
+        startTimestampSec = startTimestampSec,
+        endTimestampSec = endTimestampSec,
+        language = language,
+        hostCities = AppConfig.objectMapper.writeValueAsString(hostCities),
+        mode = mode
+    )
