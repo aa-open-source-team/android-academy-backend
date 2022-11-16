@@ -18,11 +18,18 @@ class RegisterService(
         if (existingUser == null) {
             val user = UserEntity(username = username, pwd = pwd, name = name, userRole = userRole)
             userDAO.save(user = user)
-            val token = generateToken()
-            authInfoDao.save(authInfo = AuthInfoEntity(token = token, userId = user.id))
+            val refreshToken = generateToken()
+            authInfoDao.save(
+                authInfo = AuthInfoEntity(
+                    refreshToken = refreshToken,
+                    authToken = "",
+                    timestampUpdated = 0,
+                    userId = user.id
+                )
+            )
             return LoginResult(
                 success = true,
-                token = token,
+                refreshToken = refreshToken,
                 user = user
             )
         } else {

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 
 class LessonDTO(
     @JsonProperty("id")
-    val id: Long,
+    val id: Long? = null,
     @JsonProperty("title")
     val title: String,
     @JsonProperty("short_description")
@@ -55,3 +55,19 @@ fun fromLesson(lesson: LessonEntity): LessonDTO =
             isFavourite = isFavourite
         )
     }
+
+fun LessonDTO.toLesson(): LessonEntity =
+    LessonEntity(
+        id = id,
+        title = title,
+        youtubeUrl = youtubeUrl,
+        githubRepoUrl = githubRepoUrl,
+        telegramChannel = telegramChannel,
+        additionalMaterials = AppConfig.objectMapper.writeValueAsString(additionalMaterials),
+        imgUrl = imgUrl,
+        tags = tags.joinToString(),
+        courseId = courseId,
+        startTimestampSec = startTimestampSec,
+        endTimestampSec = endTimestampSec,
+        isFavourite = isFavourite
+    )

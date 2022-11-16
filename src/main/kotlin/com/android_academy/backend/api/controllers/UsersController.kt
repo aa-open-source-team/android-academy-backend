@@ -16,14 +16,17 @@ class UsersController(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
         @RequestBody fcmToken: String
     ) {
-        if (token == null) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        if (token != null) {
+            val authInfo = loginService.getValidAuthInfo(token)
+            if (authInfo != null) {
+                loginService.updateAuthInfo(
+                    refreshToken = authInfo.refreshToken,
+                    authToken = token,
+                    fcmToken = fcmToken,
+                    userId = authInfo.userId
+                )
+            }
         }
-        val authInfo = loginService.getAuthInfo(token)
-        if (authInfo != null) {
-            loginService.updateAuthInfo(token = token, fcmToken = fcmToken, userId = authInfo.userId)
-        } else {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        }
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     }
 }

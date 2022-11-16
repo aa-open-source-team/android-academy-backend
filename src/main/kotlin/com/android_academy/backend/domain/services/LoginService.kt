@@ -5,38 +5,57 @@ import com.android_academy.backend.db.dao.UsersDao
 import com.android_academy.backend.db.models.AuthInfoEntity
 import com.android_academy.backend.domain.models.LoginResult
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Clock
 
 class LoginService(
     @Autowired val userDAO: UsersDao,
-    @Autowired val authInfoDao: AuthInfoDao
+    @Autowired val authInfoDao: AuthInfoDao,
+    @Autowired val clock: Clock
 ) {
     fun login(username: String, pwd: String): LoginResult {
         val user = userDAO.findBy(username = username)
         val success = user?.pwd == pwd
-        var token = ""
+        var refreshToken = ""
         if (success) {
-            token = generateToken()
+            refreshToken = generateToken()
             authInfoDao.save(
-                AuthInfoEntity(token = token, userId = user!!.id)
+                AuthInfoEntity(refreshToken = refreshToken, authToken = "", timestampUpdated = 0, userId = user!!.id)
             )
         }
         return LoginResult(
             success = success,
-            token = token,
+            refreshToken = refreshToken,
             user = user
         )
     }
 
-    fun getAuthInfo(token: String): AuthInfoEntity? =
-        authInfoDao.findBy(token = token)
+    fun getAuthInfoByRefreshToken(refreshToken: String): AuthInfoEntity? =
+        authInfoDao.findByRefreshToken(refreshToken = refreshToken)
 
-    fun updateAuthInfo(token: String, fcmToken: String, userId: Long) {
+    fun getValidAuthInfo(authToken: String): AuthInfoEntity? {
+        val authInfo = authInfoDao.findBy(authToken = authToken)
+        return if (isTokenValid(authInfo)) {
+            authInfo
+        } else {
+            null
+        }
+    }
+
+    fun updateAuthInfo(refreshToken: String, authToken: String, fcmToken: String?, userId: Long): Boolean =
         authInfoDao.save(
             AuthInfoEntity(
-                token = token,
+                refreshToken = refreshToken,
+                authToken = authToken,
+                timestampUpdated = clock.millis(),
                 fcmToken = fcmToken,
                 userId = userId
             )
         )
+
+    private fun isTokenValid(authInfo: AuthInfoEntity?): Boolean =
+        authInfo != null && (clock.millis() - authInfo.timestampUpdated) <= TOKEN_LIFE_TIME
+
+    companion object {
+        private const val TOKEN_LIFE_TIME = 86400000
     }
 }

@@ -4,6 +4,6 @@ import com.android_academy.backend.db.models.UserEntity
 
 data class LoginResult(
     val success: Boolean,
-    val token: String,
+    val refreshToken: String,
     val user: UserEntity?
 )
