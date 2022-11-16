@@ -1,7 +1,7 @@
 package com.android_academy.backend.api.controllers
 
+import com.android_academy.backend.api.models.LoginResponseDTO
 import com.android_academy.backend.api.models.RegisterRequestDTO
-import com.android_academy.backend.api.models.RegisterResponseDTO
 import com.android_academy.backend.db.exceptions.ExistingEntityException
 import com.android_academy.backend.db.models.toUserProfileDTO
 import com.android_academy.backend.domain.services.RegisterService
@@ -18,11 +18,10 @@ import org.springframework.web.server.ResponseStatusException
 class RegisterController(
     @Autowired val registerService: RegisterService
 ) {
-
     @PostMapping
     fun register(
         @RequestBody registerRequestDTO: RegisterRequestDTO
-    ): RegisterResponseDTO =
+    ): LoginResponseDTO =
         try {
             val registerResult = registerService.register(
                 username = registerRequestDTO.username,
@@ -30,9 +29,9 @@ class RegisterController(
                 name = registerRequestDTO.name,
                 userRole = registerRequestDTO.userRole
             )
-            RegisterResponseDTO(
-                token = registerResult.token,
-                registerResult.user!!.toUserProfileDTO()
+            LoginResponseDTO(
+                userProfile = registerResult.user!!.toUserProfileDTO(),
+                refreshToken = registerResult.refreshToken
             )
         } catch (e: ExistingEntityException) {
             throw ResponseStatusException(HttpStatus.CONFLICT)
