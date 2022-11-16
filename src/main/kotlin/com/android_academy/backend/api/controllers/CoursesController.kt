@@ -24,15 +24,13 @@ class CoursesController(
         @RequestHeader(TOKEN_HEADER, required = false) token: String?,
         @RequestBody newCourseDTO: CourseDTO
     ): CourseDTO {
-        if (token == null) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        if (token != null) {
+            val authInfo = loginService.getValidAuthInfo(token)
+            if (authInfo != null) {
+                return fromCourse(coursesService.save(userId = authInfo.userId, course = newCourseDTO.toCourse()))
+            }
         }
-        val authInfo = loginService.getAuthInfo(token)
-        if (authInfo != null) {
-            return fromCourse(coursesService.save(userId = authInfo.userId, course = newCourseDTO.toCourse()))
-        } else {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        }
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     }
 
 
@@ -41,7 +39,7 @@ class CoursesController(
         @RequestHeader(TOKEN_HEADER, required = false) token: String?
     ): List<CourseDTO> {
         logger.error("The token is ${token ?: "null"}")
-        if (token != null && loginService.getAuthInfo(token) != null) {
+        if (token != null && loginService.getValidAuthInfo(token) != null) {
             return coursesService.getAllCourses()
                 .map { course -> fromCourse(course = course) }
         } else {
@@ -54,16 +52,14 @@ class CoursesController(
     fun getFavoriteCourses(
         @RequestHeader(TOKEN_HEADER, required = false) token: String?
     ): List<CourseDTO> {
-        if (token == null) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        if (token != null) {
+            val authInfo = loginService.getValidAuthInfo(token)
+            if (authInfo != null) {
+                return coursesService.getFavoriteCourses(userId = authInfo.userId)
+                    .map { course -> fromCourse(course = course) }
+            }
         }
-        val authInfo = loginService.getAuthInfo(token)
-        if (authInfo != null) {
-            return coursesService.getFavoriteCourses(userId = authInfo.userId)
-                .map { course -> fromCourse(course = course) }
-        } else {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        }
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     }
 
     companion object {

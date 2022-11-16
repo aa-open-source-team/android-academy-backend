@@ -21,22 +21,20 @@ class LessonsController(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
         @RequestBody newLessonDTO: LessonDTO
     ): LessonDTO {
-        if (token == null) {
-            throw throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        if (token != null) {
+            val authInfo = loginService.getValidAuthInfo(token)
+            if (authInfo != null) {
+                return fromLesson(lessonsService.save(lesson = newLessonDTO.toLesson()))
+            }
         }
-        val authInfo = loginService.getAuthInfo(token)
-        if (authInfo != null) {
-            return fromLesson(lessonsService.save(lesson = newLessonDTO.toLesson()))
-        } else {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        }
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     }
 
     @GetMapping("all")
     fun getAll(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?
     ): List<LessonDTO> {
-        if (token != null && loginService.getAuthInfo(token) != null) {
+        if (token != null && loginService.getValidAuthInfo(token) != null) {
             return lessonsService.getAll()
                 .map { lecture -> fromLesson(lesson = lecture) }
         } else {
@@ -49,7 +47,7 @@ class LessonsController(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
         @RequestParam courseId: Long
     ): List<LessonDTO> {
-        if (token != null && loginService.getAuthInfo(token) != null) {
+        if (token != null && loginService.getValidAuthInfo(token) != null) {
             return lessonsService.getByCourseId(id = courseId)
                 .map { lesson -> fromLesson(lesson) }
         } else {
@@ -62,7 +60,7 @@ class LessonsController(
         @RequestHeader(CoursesController.TOKEN_HEADER, required = false) token: String?,
         @PathVariable lessonId: Long
     ): LessonDTO {
-        if (token != null && loginService.getAuthInfo(token) != null) {
+        if (token != null && loginService.getValidAuthInfo(token) != null) {
             val lesson = lessonsService.getById(id = lessonId)
             if (lesson != null) {
                 return fromLesson(lesson)

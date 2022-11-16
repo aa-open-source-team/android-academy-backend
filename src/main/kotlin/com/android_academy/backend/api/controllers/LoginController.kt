@@ -1,15 +1,14 @@
 package com.android_academy.backend.api.controllers
 
+import com.android_academy.backend.api.models.AuthTokenDTO
 import com.android_academy.backend.api.models.LoginRequestDTO
 import com.android_academy.backend.api.models.LoginResponseDTO
 import com.android_academy.backend.db.models.toUserProfileDTO
 import com.android_academy.backend.domain.services.LoginService
+import com.android_academy.backend.domain.services.generateToken
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
@@ -25,8 +24,31 @@ class LoginController(
         if (loginResult.success) {
             return LoginResponseDTO(
                 userProfile = loginResult.user!!.toUserProfileDTO(),
-                token = loginResult.token
+                refreshToken = loginResult.refreshToken
             )
+        } else {
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        }
+    }
+
+    @GetMapping("new-token")
+    fun getNewToken(
+        @RequestParam refreshToken: String
+    ): AuthTokenDTO {
+        val authInfo = loginService.getAuthInfoByRefreshToken(refreshToken = refreshToken)
+        if (authInfo != null) {
+            val newAuthToken = generateToken()
+            val updateSucceeded = loginService.updateAuthInfo(
+                refreshToken = refreshToken,
+                authToken = newAuthToken,
+                fcmToken = authInfo.fcmToken,
+                userId = authInfo.userId
+            )
+            if (updateSucceeded) {
+                return AuthTokenDTO(authToken = newAuthToken)
+            } else {
+                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
         } else {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         }

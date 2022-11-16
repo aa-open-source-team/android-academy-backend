@@ -15,6 +15,7 @@ import com.j256.ormlite.table.TableUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.time.Clock
 
 @Configuration
 class AppConfig {
@@ -53,9 +54,10 @@ class AppConfig {
     @Bean
     fun loginService(
         userDAO: UsersDao,
-        authInfoDao: AuthInfoDao
+        authInfoDao: AuthInfoDao,
+        clock: Clock
     ): LoginService =
-        LoginService(userDAO = userDAO, authInfoDao = authInfoDao)
+        LoginService(userDAO = userDAO, authInfoDao = authInfoDao, clock = clock)
 
     @Bean
     fun registerService(
@@ -72,6 +74,10 @@ class AppConfig {
                 userCoursesDelegateDao = createDao(clazz = UsersCoursesConnectingTable::class.java)
             )
         )
+
+    @Bean
+    fun clock(): Clock =
+        Clock.systemUTC()
 
 //    @Bean
 //    fun messaging(): FirebaseMessaging {
