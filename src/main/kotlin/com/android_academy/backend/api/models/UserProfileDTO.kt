@@ -9,5 +9,7 @@ class UserProfileDTO(
     @JsonProperty("name")
     val name: String,
     @JsonProperty("user_role")
-    val userRole: UserRole
+    val userRole: UserRole,
+    @JsonProperty("refresh_token")
+    val refreshToken: String
 )
