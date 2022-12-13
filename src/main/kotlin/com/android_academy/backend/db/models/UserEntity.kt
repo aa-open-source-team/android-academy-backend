@@ -21,9 +21,10 @@ class UserEntity(
     constructor() : this(id = 0, username = "", pwd = "", name = "", userRole = UserRole.UNKNOWN)
 }
 
-fun UserEntity.toUserProfileDTO(): UserProfileDTO =
+fun UserEntity.toUserProfileDTO(refreshToken: String): UserProfileDTO =
     UserProfileDTO(
         username = username,
         name = name,
-        userRole = userRole
+        userRole = userRole,
+        refreshToken = refreshToken
     )

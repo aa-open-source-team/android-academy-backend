@@ -30,8 +30,8 @@ class RegisterController(
                 userRole = registerRequestDTO.userRole
             )
             LoginResponseDTO(
-                userProfile = registerResult.user!!.toUserProfileDTO(),
-                refreshToken = registerResult.refreshToken
+                userProfile = registerResult.user
+                !!.toUserProfileDTO(registerResult.refreshToken)
             )
         } catch (e: ExistingEntityException) {
             throw ResponseStatusException(HttpStatus.CONFLICT)
