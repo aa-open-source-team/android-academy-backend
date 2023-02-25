@@ -56,6 +56,6 @@ class LoginService(
         authInfo != null && (clock.millis() - authInfo.timestampUpdated) <= TOKEN_LIFE_TIME
 
     companion object {
-        private const val TOKEN_LIFE_TIME = 86400000
+        private const val TOKEN_LIFE_TIME = 7260000 // 2 hours and 1 minute
     }
 }
